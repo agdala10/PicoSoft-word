@@ -52,6 +52,7 @@ Elige el formato de tu sistema operativo:
 | 🎩 **Fedora / RHEL / openSUSE** | `.rpm` | [`picosoft-word-1.0.0-1.x86_64.rpm`](release/picosoft-word-1.0.0-1.x86_64.rpm) | 26 MB |
 | 📦 **Arch Linux / Manjaro** | `pkg.tar.gz` | [`picosoft-word-1.0.0-1-x86_64.pkg.tar.gz`](release/picosoft-word-1.0.0-1-x86_64.pkg.tar.gz) · [`PKGBUILD`](release/PKGBUILD) | 27 MB |
 | 🚀 **Cualquier Linux** | `AppImage` | [`PicoSoft-Word-1.0.0-x86_64.AppImage`](release/PicoSoft-Word-1.0.0-x86_64.AppImage) | 25 MB |
+| 📱 **Cualquier Linux (Flatpak)** | `.flatpak` | [`io.github.agdala10.PicoSoftWord-1.0.0-x86_64.flatpak`](release/io.github.agdala10.PicoSoftWord-1.0.0-x86_64.flatpak) | 17 MB |
 
 ### Instalación rápida
 
@@ -81,6 +82,17 @@ makepkg -si
 chmod +x PicoSoft-Word-1.0.0-x86_64.AppImage
 ./PicoSoft-Word-1.0.0-x86_64.AppImage
 ```
+
+**Flatpak (cualquier distro):**
+```bash
+# Instalar el bundle (sin root)
+flatpak install --user io.github.agdala10.PicoSoftWord-1.0.0-x86_64.flatpak
+
+# Ejecutar
+flatpak run io.github.agdala10.PicoSoftWord
+```
+
+> Guía completa de Flatpak y cómo publicarlo en **Flathub**: [`packaging/flathub/README.md`](packaging/flathub/README.md)
 
 ---
 

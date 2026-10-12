@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.agdala10.PicoSoftWord</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT OR Apache-2.0</project_license>
+  <name>PicoSoft - Word 2026</name>
+  <summary>El Microsoft Office 2026 Libre 100% Gratuito</summary>
+  <description>
+    <p>
+      PicoSoft - Word 2026 es un procesador de textos moderno, libre y gratuito,
+      escrito íntegramente en Rust con una interfaz nativa de escritorio. Es una
+      alternativa abierta y de alto rendimiento a las suites ofimáticas propietarias,
+      con objetivo de paridad total con Microsoft Word en formatos, tipografía y
+      flujo de trabajo.
+    </p>
+    <p>Características principales:</p>
+    <ul>
+      <li>Ultrarrápido: binario nativo en Rust con motor de renderizado propio (Vello).</li>
+      <li>Compatibilidad DOCX: lectura y escritura nativa de OOXML (ECMA-376 / ISO 29500), además de TXT, Markdown, HTML, RTF y ODT.</li>
+      <li>Cinco temas de interfaz: Claro, Oscuro, Rosado, Azul Oscuro y Rojo Pastel con degradados.</li>
+      <li>Control por agentes: servidor MCP integrado para automatización con IA.</li>
+      <li>Privado por diseño: sin telemetría, sin nube obligatoria, sin cuentas.</li>
+      <li>Accesibilidad: soporte de lectores de pantalla, atajos completos y tipografía escalable.</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">io.github.agdala10.PicoSoftWord.desktop</launchable>
+  <url type="homepage">https://agdala10.github.io/PicoSoft-word</url>
+  <url type="bugtracker">https://github.com/agdala10/PicoSoft-word/issues</url>
+  <url type="vcs-browser">https://github.com/agdala10/PicoSoft-word</url>
+  <developer id="io.github.agdala10">
+    <name>Agdala</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+  <categories>
+    <category>Office</category>
+    <category>WordProcessor</category>
+    <category>TextEditor</category>
+  </categories>
+  <releases>
+    <release version="1.0.0" date="2026-10-12">
+      <description>
+        <p>Versión inicial de PicoSoft - Word 2026.</p>
+      </description>
+      <artifacts>
+        <artifact type="source" href="https://github.com/agdala10/PicoSoft-word/releases/download/v1.0.0/PicoSoft-Word-1.0.0-x86_64.AppImage" />
+      </artifacts>
+    </release>
+  </releases>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Tema Rojo Pastel</caption>
+      <image>https://raw.githubusercontent.com/agdala10/PicoSoft-word/main/docs/images/tema-rojo-pastel.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Tema Claro</caption>
+      <image>https://raw.githubusercontent.com/agdala10/PicoSoft-word/main/docs/images/tema-claro.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Tema Rosado</caption>
+      <image>https://raw.githubusercontent.com/agdala10/PicoSoft-word/main/docs/images/tema-rosado.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Tema Azul Oscuro</caption>
+      <image>https://raw.githubusercontent.com/agdala10/PicoSoft-word/main/docs/images/tema-azul-oscuro.png</image>
+    </screenshot>
+  </screenshots>
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </recommends>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+</component>

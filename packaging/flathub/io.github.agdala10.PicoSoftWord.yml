@@ -1,0 +1,55 @@
+# Manifiesto de Flatpak para Flathub — PicoSoft - Word 2026
+# App ID en DNS inverso bajo el dominio de GitHub (requisito de Flathub).
+# Construye desde el código fuente usando el SDK de freedesktop con Rust.
+#
+# Nota sobre red: flatpak-builder necesita acceso a crates.io durante el build.
+# Flathub lo permite vía su infraestructura; localmente se usa --share-network.
+app-id: io.github.agdala10.PicoSoftWord
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: picosoft-word
+
+# Permisos del sandbox
+finish-args:
+  # Acceso a pantalla (X11/Wayland)
+  - --socket=wayland
+  - --socket=x11
+  - --socket=fallback-x11
+  # Audio (lectura en voz alta)
+  - --socket=pulseaudio
+  # Aceleración por GPU
+  - --device=dri
+  # Acceso a home para abrir/guardar documentos
+  - --filesystem=home
+  # Portales de escritorio (guardar/abrir archivos vía portal)
+  - --talk-name=org.freedesktop.portal.Desktop
+  - --talk-name=org.freedesktop.portal.FileChooser
+
+# Módulos: el proyecto Rust completo
+modules:
+  - name: picosoft-word
+    buildsystem: simple
+    build-commands:
+      # Construir en modo release con cargo
+      - cargo --offline build --release -p wordcraft || cargo build --release -p wordcraft
+      # Instalar binario
+      - install -Dm755 target/release/wordcraft /app/bin/picosoft-word
+      # Instalar archivo .desktop
+      - install -Dm644 packaging/flathub/io.github.agdala10.PicoSoftWord.desktop
+        /app/share/applications/io.github.agdala10.PicoSoftWord.desktop
+      # Instalar metainfo
+      - install -Dm644 packaging/flathub/io.github.agdala10.PicoSoftWord.metainfo.xml
+        /app/share/metainfo/io.github.agdala10.PicoSoftWord.metainfo.xml
+      # Instalar iconos
+      - install -Dm644 packaging/flathub/icon-64.png
+        /app/share/icons/hicolor/64x64/apps/io.github.agdala10.PicoSoftWord.png
+      - install -Dm644 packaging/flathub/icon-128.png
+        /app/share/icons/hicolor/128x128/apps/io.github.agdala10.PicoSoftWord.png
+      - install -Dm644 packaging/flathub/icon-512.png
+        /app/share/icons/hicolor/512x512/apps/io.github.agdala10.PicoSoftWord.png
+    sources:
+      # Código fuente desde el repositorio de GitHub
+      - type: git
+        url: https://github.com/agdala10/PicoSoft-word.git
+        branch: main
