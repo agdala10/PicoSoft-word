@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PicoSoft - Word 2026 · El Microsoft Office 2026 Libre 100% Gratuito</title>
+  <meta name="description" content="PicoSoft - Word 2026. El procesador de textos libre, gratuito y ultrarrápido escrito en Rust. Compatible con DOCX, multiprotaforma, con 5 temas de interfaz.">
+  <meta name="keywords" content="PicoSoft, Word, procesador de textos, office libre, Rust, DOCX, gratuito, open source">
+  <meta property="og:title" content="PicoSoft - Word 2026 · El Microsoft Office 2026 Libre">
+  <meta property="og:description" content="Procesador de textos libre, gratuito y ultrarrápido escrito en Rust. Compatible con DOCX.">
+  <meta property="og:image" content="images/icon.png">
+  <meta property="og:type" content="website">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ps-primary: #d6336c;
+      --ps-secondary: #7b2ff7;
+      --ps-dark: #1a0a14;
+      --ps-grad: linear-gradient(135deg, #d6336c 0%, #c2255c 45%, #7b2ff7 100%);
+    }
+    * { font-family: 'Inter', system-ui, sans-serif; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--ps-dark); color: #fff; overflow-x: hidden; }
+
+    /* ---------- Canvas de partículas de fondo ---------- */
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    .content-layer { position: relative; z-index: 1; }
+
+    /* ---------- Navbar ---------- */
+    .navbar { backdrop-filter: blur(14px); background: rgba(26,10,20,.72) !important; border-bottom: 1px solid rgba(214,51,108,.25); }
+    .navbar-brand { font-weight: 800; letter-spacing: -.5px; }
+    .navbar-brand img { width: 34px; height: 34px; border-radius: 8px; margin-right: 10px; }
+    .nav-link { font-weight: 500; color: rgba(255,255,255,.78) !important; transition: color .2s; }
+    .nav-link:hover { color: #fff !important; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      background:
+        radial-gradient(1100px 520px at 12% -8%, rgba(214,51,108,.35), transparent 60%),
+        radial-gradient(900px 500px at 92% 12%, rgba(123,47,247,.32), transparent 60%),
+        var(--ps-grad);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.28);
+      padding: 8px 18px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+    .hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 900; line-height: 1.05; letter-spacing: -2px; }
+    .hero .lead { font-size: clamp(1rem, 2vw, 1.35rem); opacity: .95; max-width: 620px; }
+    .hero-img {
+      border-radius: 18px; border: 1px solid rgba(255,255,255,.25);
+      box-shadow: 0 40px 90px rgba(0,0,0,.5); width: 100%; height: auto;
+      transform: perspective(1400px) rotateY(-9deg) rotateX(3deg);
+      transition: transform .5s ease;
+    }
+    .hero-img:hover { transform: perspective(1400px) rotateY(-3deg) rotateX(1deg) scale(1.02); }
+
+    .btn-ps { background: #fff; color: var(--ps-primary); font-weight: 700; border-radius: 12px; padding: 14px 30px; border: none; transition: transform .2s, box-shadow .2s; }
+    .btn-ps:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(0,0,0,.4); color: var(--ps-primary); }
+    .btn-ps-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.4); font-weight: 600; border-radius: 12px; padding: 14px 30px; }
+    .btn-ps-ghost:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ---------- Secciones ---------- */
+    section { padding: 90px 0; }
+    .section-title { font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -1px; }
+    .grad-text { background: var(--ps-grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .card-ps {
+      background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px; height: 100%; transition: transform .3s, border-color .3s, background .3s;
+      backdrop-filter: blur(6px);
+    }
+    .card-ps:hover { transform: translateY(-8px); border-color: rgba(214,51,108,.55); background: rgba(255,255,255,.075); }
+    .card-ps .ico {
+      width: 58px; height: 58px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; background: var(--ps-grad); color: #fff; margin-bottom: 18px;
+    }
+
+    /* ---------- Descargas ---------- */
+    .dl-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px; padding: 30px; height: 100%; text-align: center;
+      transition: transform .3s, border-color .3s; text-decoration: none; color: #fff; display: block;
+    }
+    .dl-card:hover { transform: translateY(-8px); border-color: var(--ps-primary); color: #fff; }
+    .dl-card .dl-ico { font-size: 3rem; margin-bottom: 14px; }
+    .dl-card .dl-size { font-size: .8rem; opacity: .6; }
+
+    /* ---------- Galería ---------- */
+    .gallery-img { border-radius: 14px; border: 1px solid rgba(255,255,255,.15); box-shadow: 0 20px 45px rgba(0,0,0,.45); transition: transform .35s, box-shadow .35s; cursor: pointer; width: 100%; }
+    .gallery-img:hover { transform: scale(1.04) translateY(-6px); box-shadow: 0 30px 65px rgba(214,51,108,.4); }
+
+    /* ---------- Reseña / estrellas ---------- */
+    .stars { color: #ffc93c; font-size: 1.4rem; letter-spacing: 3px; }
+    .review-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 40px; }
+    .quote-mark { font-size: 5rem; line-height: .5; color: var(--ps-primary); opacity: .55; }
+
+    /* ---------- Footer ---------- */
+    footer { background: rgba(0,0,0,.45); border-top: 1px solid rgba(214,51,108,.25); padding: 50px 0 30px; }
+    footer a { color: rgba(255,255,255,.75); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    /* ---------- Animaciones de entrada ---------- */
+    .fade-up { opacity: 0; transform: translateY(34px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      .hero { text-align: center; }
+      .hero .lead { margin-inline: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== PARTÍCULAS ===================== -->
+<canvas id="particles"></canvas>
+
+<div class="content-layer">
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#inicio">
+        <img src="images/icon.png" alt="PicoSoft"> PicoSoft <span class="ms-2 d-none d-sm-inline" style="opacity:.6">Word 2026</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#caracteristicas">Características</a></li>
+          <li class="nav-item"><a class="nav-link" href="#descargas">Descargas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+          <li class="nav-item"><a class="nav-link" href="#resena">Reseña</a></li>
+          <li class="nav-item ms-lg-3">
+            <a href="#descargas" class="btn btn-ps btn-sm px-4"><i class="bi bi-download"></i> Descargar</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero" id="inicio">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="hero-badge mb-4"><i class="bi bi-stars"></i> 100% Libre y Gratuito</span>
+          <h1 class="mb-3">PicoSoft<br><span style="opacity:.85">Word 2026</span></h1>
+          <p class="lead mb-4">El <strong>Microsoft Office 2026 Libre</strong>. Procesador de textos ultrarrápido escrito en Rust, compatible con DOCX, multiprotaforma y con 5 temas de interfaz.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="#descargas" class="btn btn-ps"><i class="bi bi-download me-2"></i>Descargar Gratis</a>
+            <a href="#resena" class="btn btn-ps-ghost"><i class="bi bi-star me-2"></i>Ver Reseña</a>
+          </div>
+          <div class="d-flex flex-wrap gap-4 mt-4" style="font-size:.85rem;opacity:.9">
+            <span><i class="bi bi-bolt-fill me-1"></i> Arranque instantáneo</span>
+            <span><i class="bi bi-file-earmark-word me-1"></i> Compatible DOCX</span>
+            <span><i class="bi bi-shield-lock me-1"></i> Sin telemetría</span>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <img src="images/tema-rojo-pastel.png" alt="PicoSoft - Word 2026 con tema Rojo Pastel" class="hero-img">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== CARACTERÍSTICAS ===================== -->
+  <section id="caracteristicas">
+    <div class="container">
+      <div class="text-center mb-5 fade-up">
+        <h2 class="section-title">Todo lo que necesitas, <span class="grad-text">nada que sobre</span></h2>
+        <p class="lead text-white-50 mt-3 mx-auto" style="max-width:640px">Un procesador de textos moderno que combina velocidad, compatibilidad y libertad.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-lightning-charge-fill"></i></div>
+            <h5>Ultrarrápido</h5>
+            <p class="text-white-50 mb-0">Escrito en Rust con motor de renderizado propio. Arranca en menos de un segundo y desplaza páginas complejas sin tirones.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-file-earmark-word-fill"></i></div>
+            <h5>Compatibilidad DOCX</h5>
+            <p class="text-white-50 mb-0">Lectura y escritura nativa de OOXML según ECMA-376 / ISO 29500. También TXT, Markdown, HTML, RTF y ODT.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-palette-fill"></i></div>
+            <h5>5 Temas de Interfaz</h5>
+            <p class="text-white-50 mb-0">Claro, Oscuro, Rosado, Azul Oscuro y Rojo Pastel con degradados. El tema claro es el predeterminado.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-cpu-fill"></i></div>
+            <h5>Control por Agentes (MCP)</h5>
+            <p class="text-white-50 mb-0">Servidor MCP integrado: los agentes de IA pueden abrir, editar, formatear y exportar documentos automáticamente.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-globe-americas"></i></div>
+            <h5>Multiprotaforma</h5>
+            <p class="text-white-50 mb-0">Linux, Windows, macOS, BSD y Web (WASM). Paquetes nativos para cada distribución.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 fade-up">
+          <div class="card-ps p-4">
+            <div class="ico"><i class="bi bi-shield-check"></i></div>
+            <h5>Privado por Diseño</h5>
+            <p class="text-white-50 mb-0">Sin telemetría, sin nube obligatoria, sin cuentas. Tus documentos son tuyos y se quedan en tu equipo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DESCARGAS ===================== -->
+  <section id="descargas" style="background:rgba(0,0,0,.28)">
+    <div class="container">
+      <div class="text-center mb-5 fade-up">
+        <h2 class="section-title">Descarga <span class="grad-text">PicoSoft Word 2026</span></h2>
+        <p class="lead text-white-50 mt-3 mx-auto" style="max-width:640px">Elige el formato de tu sistema operativo. Gratis para siempre.</p>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-6 col-md-4 col-lg-3 fade-up">
+          <a class="dl-card" href="https://github.com/agdala10/PicoSoft-word/raw/main/release/picosoft-word_1.0.0_amd64.deb">
+            <div class="dl-ico">🐧</div>
+            <h5>Debian / Ubuntu</h5>
+            <div class="text-white-50 mb-2">Archivo .deb</div>
+            <span class="badge text-bg-danger">19 MB</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 fade-up">
+          <a class="dl-card" href="https://github.com/agdala10/PicoSoft-word/raw/main/release/picosoft-word-1.0.0-1.x86_64.rpm">
+            <div class="dl-ico">🎩</div>
+            <h5>Fedora / RHEL</h5>
+            <div class="text-white-50 mb-2">Archivo .rpm</div>
+            <span class="badge text-bg-danger">26 MB</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 fade-up">
+          <a class="dl-card" href="https://github.com/agdala10/PicoSoft-word/raw/main/release/picosoft-word-1.0.0-1-x86_64.pkg.tar.gz">
+            <div class="dl-ico">📦</div>
+            <h5>Arch / Manjaro</h5>
+            <div class="text-white-50 mb-2">Archivo .pkg.tar.gz</div>
+            <span class="badge text-bg-danger">27 MB</span>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 fade-up">
+          <a class="dl-card" href="https://github.com/agdala10/PicoSoft-word/raw/main/release/PicoSoft-Word-1.0.0-x86_64.AppImage">
+            <div class="dl-ico">🚀</div>
+            <h5>Cualquier Linux</h5>
+            <div class="text-white-50 mb-2">AppImage portable</div>
+            <span class="badge text-bg-danger">25 MB</span>
+          </a>
+        </div>
+      </div>
+      <div class="text-center mt-4 fade-up">
+        <a href="https://github.com/agdala10/PicoSoft-word/releases" class="btn btn-ps-ghost"><i class="bi bi-github me-2"></i>Ver en GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GALERÍA ===================== -->
+  <section id="galeria">
+    <div class="container">
+      <div class="text-center mb-5 fade-up">
+        <h2 class="section-title">Galería de <span class="grad-text">temas</span></h2>
+        <p class="lead text-white-50 mt-3 mx-auto" style="max-width:640px">Cinco temas de interfaz para trabajar sin fatiga visual, con degradados suaves.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/tema-claro.png" class="gallery-img" alt="Tema Claro" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/tema-claro.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Tema Claro</p>
+        </div>
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/tema-rosado.png" class="gallery-img" alt="Tema Rosado" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/tema-rosado.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Tema Rosado</p>
+        </div>
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/tema-azul-oscuro.png" class="gallery-img" alt="Tema Azul Oscuro" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/tema-azul-oscuro.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Tema Azul Oscuro</p>
+        </div>
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/tema-rojo-pastel.png" class="gallery-img" alt="Tema Rojo Pastel" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/tema-rojo-pastel.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Tema Rojo Pastel</p>
+        </div>
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/tema-rojo-pastel-2.png" class="gallery-img" alt="Tema Rojo Pastel (vista)" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/tema-rojo-pastel-2.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Rojo Pastel · Documento</p>
+        </div>
+        <div class="col-6 col-lg-4 fade-up">
+          <img src="images/icon.png" class="gallery-img" alt="Icono PicoSoft" data-bs-toggle="modal" data-bs-target="#lightbox" data-src="images/icon.png">
+          <p class="text-center mt-2 text-white-50 mb-0">Icono oficial</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESEÑA ===================== -->
+  <section id="resena" style="background:rgba(0,0,0,.28)">
+    <div class="container">
+      <div class="text-center mb-5 fade-up">
+        <h2 class="section-title">Reseña de la <span class="grad-text">app</span></h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-9 fade-up">
+          <div class="review-card">
+            <div class="d-flex align-items-center mb-4">
+              <div class="quote-mark">“</div>
+              <div class="ms-2">
+                <div class="stars">★★★★★</div>
+                <small class="text-white-50">Puntuación: 5/5 · Reseña oficial</small>
+              </div>
+            </div>
+            <h4 class="mb-3">PicoSoft - Word 2026: la alternativa libre que sí desafía a Word</h4>
+            <p class="text-white-50">Durante años, buscar un procesador de textos libre que realmente compitiera con Microsoft Word ha sido una frustración garantizada: o eran lentos, o arruinaban el formato DOCX, o traían una interfaz de otra década. <strong class="text-white">PicoSoft - Word 2026 cambia el juego.</strong></p>
+            <p class="text-white-50">Lo primero que se nota es la <strong class="text-white">velocidad</strong>. Al estar escrito en Rust con un motor de renderizado propio, el arranque es instantáneo y la escritura se siente fluida incluso en documentos largos con imágenes.</p>
+            <p class="text-white-50">El segundo acierto es la <strong class="text-white">compatibilidad</strong>. Abrir un <code>.docx</code> enviado por un cliente de Word y verlo renderizado idéntico lo convierte en una herramienta de producción real, no en un juguete.</p>
+            <p class="text-white-50">Un detalle que merece mención especial es el <strong class="text-white">control por agentes (MCP)</strong>: poder programáticamente abrir, editar y exportar documentos abre la puerta a flujos automatizados con IA.</p>
+            <p class="text-white-50 mb-4">Como proyecto <strong class="text-white">100% libre, gratuito y sin telemetría</strong>, PicoSoft - Word 2026 demuestra que el software abierto puede no solo alcanzar, sino superar en calidad de experiencia a sus competidores propietarios.</p>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Puntos fuertes</strong></div>
+                <ul class="list-unstyled text-white-50 small">
+                  <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Arranque y respuesta instantáneos</li>
+                  <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Compatibilidad DOCX fiel al estándar</li>
+                  <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>5 temas de interfaz con degradados</li>
+                  <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Control por agentes vía MCP</li>
+                  <li class="mb-1"><i class="bi bi-check2 text-success me-2"></i>Sin telemetría ni cuentas</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2"><i class="bi bi-exclamation-circle-fill text-warning me-2"></i><strong>Áreas de mejora</strong></div>
+                <ul class="list-unstyled text-white-50 small">
+                  <li class="mb-1"><i class="bi bi-dash text-warning me-2"></i>Tablas dinámicas avanzadas</li>
+                  <li class="mb-1"><i class="bi bi-dash text-warning me-2"></i>Editor de imágenes básico</li>
+                  <li class="mb-1"><i class="bi bi-dash text-warning me-2"></i>Versión web (WASM) experimental</li>
+                </ul>
+              </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="d-flex align-items-center">
+              <img src="images/icon.png" alt="Agdala" width="48" height="48" style="border-radius:12px">
+              <div class="ms-3">
+                <div class="fw-bold">Agdala</div>
+                <small class="text-white-50">Creador y mantenedor · <a href="https://github.com/agdala10">@agdala10</a></small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="d-flex align-items-center mb-3">
+            <img src="images/icon.png" width="40" height="40" style="border-radius:10px" alt="PicoSoft">
+            <span class="ms-2 fw-bold fs-5">PicoSoft Word 2026</span>
+          </div>
+          <p class="text-white-50 small">El Microsoft Office 2026 Libre. Procesador de textos nativo en Rust, libre y gratuito.</p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6 class="fw-bold mb-3">Producto</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="#caracteristicas">Características</a></li>
+            <li class="mb-2"><a href="#descargas">Descargas</a></li>
+            <li class="mb-2"><a href="#galeria">Galería</a></li>
+            <li class="mb-2"><a href="#resena">Reseña</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6 class="fw-bold mb-3">Recursos</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="https://github.com/agdala10/PicoSoft-word">Repositorio</a></li>
+            <li class="mb-2"><a href="https://github.com/agdala10/PicoSoft-word/releases">Releases</a></li>
+            <li class="mb-2"><a href="https://github.com/agdala10/PicoSoft-word/issues">Issues</a></li>
+            <li class="mb-2"><a href="LICENSE">Licencia MIT</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h6 class="fw-bold mb-3">Creado por Agdala</h6>
+          <p class="text-white-50 small mb-2"><i class="bi bi-envelope me-2"></i><a href="mailto:Agdala.sv@gmail.com">Agdala.sv@gmail.com</a></p>
+          <p class="text-white-50 small mb-3"><i class="bi bi-github me-2"></i><a href="https://github.com/agdala10">github.com/agdala10</a></p>
+          <a href="https://github.com/agdala10/PicoSoft-word" class="btn btn-ps btn-sm"><i class="bi bi-star-fill me-2"></i>Star en GitHub</a>
+        </div>
+      </div>
+      <hr class="border-secondary">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small">
+        <span class="text-white-50">© 2026 PicoSoft · Power by Agdala</span>
+        <span class="text-white-50">Licencia dual MIT / Apache-2.0 · 100% Gratuito</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ===================== MODAL LIGHTBOX ===================== -->
+<div class="modal fade" id="lightbox" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content" style="background:transparent;border:none">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center p-0">
+        <img id="lightbox-img" src="" class="img-fluid rounded" style="max-height:82vh" alt="Vista ampliada">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ============================================================
+   EFECTO DE PARTÍCULAS — constelación interactiva de fondo
+   ============================================================ */
+(function () {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const CONFIG = {
+    count: 90,          // número de partículas
+    maxDist: 130,       // distancia máxima de conexión
+    speed: 0.35,        // velocidad base
+    radius: [1, 3],     // rango de radio
+    colors: ['#d6336c', '#c2255c', '#7b2ff7', '#ffffff']
+  };
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function createParticles() {
+    particles = [];
+    for (let i = 0; i < CONFIG.count; i++) {
+      particles.push({
+        x: rand(0, W), y: rand(0, H),
+        vx: rand(-CONFIG.speed, CONFIG.speed),
+        vy: rand(-CONFIG.speed, CONFIG.speed),
+        r: rand(CONFIG.radius[0], CONFIG.radius[1]),
+        color: CONFIG.colors[(Math.random() * CONFIG.colors.length) | 0]
+      });
+    }
+  }
+  createParticles();
+
+  const mouse = { x: null, y: null, active: false };
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; });
+  window.addEventListener('mouseleave', () => { mouse.active = false; });
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // movimiento
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    }
+
+    // conexiones entre partículas cercanas
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < CONFIG.maxDist) {
+          const alpha = (1 - dist / CONFIG.maxDist) * 0.35;
+          ctx.strokeStyle = 'rgba(214,51,108,' + alpha + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      // conexión con el cursor
+      const p = particles[i];
+      if (mouse.active) {
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 170) {
+          const alpha = (1 - dist / 170) * 0.5;
+          ctx.strokeStyle = 'rgba(123,47,247,' + alpha + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
+      }
+    }
+
+    // dibujar partículas
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = p.color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ============================================================
+   ANIMACIONES DE ENTRADA AL HACER SCROLL
+   ============================================================ */
+(function () {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
+
+/* ============================================================
+   LIGHTBOX DE GALERÍA
+   ============================================================ */
+(function () {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  lb.addEventListener('show.bs.modal', e => {
+    const src = e.relatedTarget ? e.relatedTarget.getAttribute('data-src') : '';
+    img.src = src;
+  });
+})();
+
+/* ============================================================
+   CIERRE DEL NAV MOBILE AL HACER CLIC EN UN ENLACE
+   ============================================================ */
+(function () {
+  document.querySelectorAll('.navbar-nav .nav-link').forEach(a => {
+    a.addEventListener('click', () => {
+      const c = document.querySelector('.navbar-collapse.show');
+      if (c && window.bootstrap) {
+        bootstrap.Collapse.getOrCreateInstance(c).hide();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

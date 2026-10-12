@@ -1,0 +1,27 @@
+# Maintainer: Agdala <Agdala.sv@gmail.com>
+pkgname=picosoft-word
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="PicoSoft - Word 2026, procesador de textos libre y gratuito (El Microsoft Office 2026 Libre 100% Gratuito)"
+arch=('x86_64')
+url="https://github.com/agdala10/PicoSoft-word"
+license=('MIT' 'Apache-2.0')
+depends=('libgl' 'libx11' 'libxrandr' 'libxi' 'libxcursor' 'libxinerama' 'openssl')
+options=('!strip' '!emptydirs')
+source=("${pkgname}-${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  cd "${srcdir}/picosoft-word-${pkgver}"
+  # Binario
+  install -Dm755 usr/lib/picosoft-word/picosoft-word "${pkgdir}/usr/lib/picosoft-word/picosoft-word"
+  # Lanzador
+  install -Dm755 usr/bin/picosoft-word "${pkgdir}/usr/bin/picosoft-word"
+  # Desktop
+  install -Dm644 usr/share/applications/picosoft-word.desktop "${pkgdir}/usr/share/applications/picosoft-word.desktop"
+  # Iconos
+  install -Dm644 usr/share/pixmaps/picosoft-word.png "${pkgdir}/usr/share/pixmaps/picosoft-word.png"
+  for s in 512 256 128 64 48 32; do
+    install -Dm644 "usr/share/icons/hicolor/${s}x${s}/apps/picosoft-word.png"       "${pkgdir}/usr/share/icons/hicolor/${s}x${s}/apps/picosoft-word.png"
+  done
+}
